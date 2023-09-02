@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}
+Result
+{% endblock %}
+{% block content %}
+<h1>PE File Analysis Result</h1>
+<p style="font-size: 30px;">
+    Etiket: 
+    <span style="color: {% if pe_info['Label'][0] == 'benign' %} green {% else %} red {% endif %};">
+        {{ pe_info['Label'][0] }}
+    </span>
+</p>
+<h3 align="center">DOS HEADER</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in range(17) %}
+        <tr>
+            <th>{{ pe_info.columns[i] }}</th>
+            <th>{{ pe_info[pe_info.columns[i]][0] }}</th>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3 align="center">FILE HEADER</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in range(17, 24) %}
+        <tr>
+            <th>{{ pe_info.columns[i] }}</th>
+            <th>{{ pe_info[pe_info.columns[i]][0] }}</th>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3 align="center">OPTIONAL HEADER</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in range(24, 53) %}
+        <tr>
+            <th>{{ pe_info.columns[i] }}</th>
+            <th>{{ pe_info[pe_info.columns[i]][0] }}</th>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3 align="center">SECTION INFO</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in range(53, 73) %}
+        <tr>
+            <th>{{ pe_info.columns[i] }}</th>
+            <th>{{ pe_info[pe_info.columns[i]][0] }}</th>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<form action="#" method="POST">
+    <input type="hidden" name="csv_data" value="{{ pe_info }}">
+    <input type="text" name="file_name" palceholder="Filename">
+    <button type="submit">Download as CSV</button>
+</form>
+{% endblock %}
